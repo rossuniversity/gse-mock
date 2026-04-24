@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GSE — Incentive Portal (Demo)</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background: #f4f7fb;
+         max-width: 700px; margin: 30px auto; padding: 30px;
+         border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+         background: white; }
+  h1 { color: #1f3864; }
+  h2 { color: #2e75b6; margin-top: 30px; }
+  label { display: block; margin: 12px 0 4px; font-weight: 600; }
+  input, select { width: 100%; padding: 10px; font-size: 14px;
+                  border: 1px solid #ccc; border-radius: 6px; }
+  button { margin-top: 18px; padding: 10px 24px; background: #1f3864;
+           color: white; border: none; border-radius: 6px; font-size: 14px;
+           cursor: pointer; }
+  button:hover { background: #2e75b6; }
+  .protocol { background: #d4edda; padding: 18px; border-radius: 6px;
+              margin-top: 20px; border-left: 4px solid #28a745; }
+  .protocol-number { font-size: 22px; font-weight: bold; color: #155724; }
+</style>
+</head>
+<body>
+
+<h1>GSE — Gestore Servizi Energetici</h1>
+<p>Portale telematico richiesta incentivi (demo per progetto PMM)</p>
+
+<div id="loginPanel">
+  <h2>Login operatore</h2>
+  <label for="username">Username</label>
+  <input type="text" id="username" name="Username" placeholder="username">
+  <label for="password">Password</label>
+  <input type="password" id="password" name="Password" placeholder="password">
+  <button id="loginBtn" onclick="doLogin()">Login</button>
+</div>
+
+<div id="formPanel" style="display:none">
+  <h2>Nuova richiesta incentivo</h2>
+  <label for="cf">Codice Fiscale</label>
+  <input type="text" id="cf" name="CodiceFiscale" placeholder="RSSMRA80A01H501U">
+  <label for="name">Denominazione richiedente</label>
+  <input type="text" id="name" name="Denominazione" placeholder="Mario Rossi">
+  <label for="address">Indirizzo installazione</label>
+  <input type="text" id="address" name="Indirizzo" placeholder="Via Roma 12, Roma">
+  <label for="power">Potenza nominale (kWp)</label>
+  <input type="number" id="power" name="PotenzaKWp" step="0.1" placeholder="4.5">
+  <label for="panel">Tipologia pannello</label>
+  <select id="panel" name="TipologiaPannello">
+    <option>Monocrystalline</option>
+    <option>Polycrystalline</option>
+    <option>Bifacial</option>
+  </select>
+  <label for="inverter">Modello inverter</label>
+  <input type="text" id="inverter" name="Inverter" placeholder="SolarEdge SE5000H">
+  <button id="submitBtn" onclick="doSubmit()" aria-label="Invia domanda">Invia domanda</button>
+</div>
+
+<div id="resultPanel" style="display:none">
+  <div class="protocol">
+    <p>Domanda registrata con successo. Numero protocollo:</p>
+    <p class="protocol-number" id="protocolNumber"></p>
+    <p>Conserva questo numero per le successive comunicazioni.</p>
+  </div>
+  <button onclick="resetForm()">Inserisci nuova domanda</button>
+</div>
+
+<script>
+function doLogin() {
+  document.getElementById('loginPanel').style.display = 'none';
+  document.getElementById('formPanel').style.display = 'block';
+}
+function doSubmit() {
+  const protocol = 'PROT-2026-' + Math.floor(Math.random() * 90000 + 10000);
+  document.getElementById('protocolNumber').textContent = protocol;
+  document.getElementById('formPanel').style.display = 'none';
+  document.getElementById('resultPanel').style.display = 'block';
+}
+function resetForm() {
+  ['cf','name','address','power','inverter'].forEach(id =>
+    document.getElementById(id).value = '');
+  document.getElementById('resultPanel').style.display = 'none';
+  document.getElementById('formPanel').style.display = 'block';
+}
+</script>
+
+</body>
+</html>
